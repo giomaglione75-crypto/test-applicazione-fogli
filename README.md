@@ -1,0 +1,1 @@
+# test-applicazione-fogli
