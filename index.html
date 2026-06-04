@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Iannucci S.R.L. - App Viaggio</title>
     
+    <!-- Collegamento al file manifest.json per l'installazione su Desktop/Schermata Home -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="App Viaggio">
+
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%231e3a8a'/%3E%3Cpath d='M400 128H112c-26.5 0-48 21.5-48 48v224c0 17.7 14.3 32 32 32h16c8.8 0 16-7.2 16-16v-16h256v16c0 8.8 7.2 16 16 16h16c17.7 0 32-14.3 32-32V176c0-26.5-21.5-48-48-48zm-24 48v96H136v-96h240zM144 336c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z' fill='white'/%3E%3C/svg%3E">
     <link class="no-print" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%231e3a8a'/%3E%3Cpath d='M400 128H112c-26.5 0-48 21.5-48 48v224c0 17.7 14.3 32 32 32h16c8.8 0 16-7.2 16-16v-16h256v16c0 8.8 7.2 16 16 16h16c17.7 0 32-14.3 32-32V176c0-26.5-21.5-48-48-48zm-24 48v96H136v-96h240zM144 336c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z' fill='white'/%3E%3C/svg%3E">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Libreria SheetJS per l'esportazione nativa in formato Excel (.xlsx) -->
+    <!-- Libreria SheetJS per esportazione in formato Excel nativo (.xlsx) -->
     <script class="no-print" src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,11 +24,11 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        /* Forza la scrittura visiva in maiuscolo */
+        /* Forza la scrittura visiva in maiuscolo per i testi */
         input[type="text"] {
             text-transform: uppercase;
         }
-        /* Ottimizzazione completa della pagina A4 per la stampa fisica */
+        /* Ottimizzazione completa della pagina A4 per la stampa */
         @media print {
             body {
                 background: white !important;
@@ -81,6 +88,7 @@
             </button>
         </div>
 
+        <!-- SEZIONE PERSONALE -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                 👤 Personale e Bus
@@ -107,6 +115,7 @@
             </div>
         </div>
 
+        <!-- SEZIONE TRATTA E SERVIZIO -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                 🗺️ Tratta e Servizio
@@ -139,6 +148,7 @@
             </div>
         </div>
 
+        <!-- SEZIONE RILEVAMENTO CHILOMETRI -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                 🗺️ Rilevamento KM
@@ -158,6 +168,7 @@
             </div>
         </div>
 
+        <!-- SEZIONE SPESE -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                 💶 Spese di Giornata
@@ -166,20 +177,11 @@
             <div class="space-y-3">
                 <div class="bg-slate-950/40 p-3 rounded-xl border border-slate-800 space-y-3">
                     <span class="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider block">🚗 Registro Parcheggi, ZTL e Tasse Doganali</span>
-                    
-                    <div id="container_spese_dinamiche" class="space-y-2">
-                        </div>
-
+                    <div id="container_spese_dinamiche" class="space-y-2"></div>
                     <div class="grid grid-cols-3 gap-1.5 pt-1">
-                        <button onclick="aggiungiSpesaDinamica('PARCHEGGIO', '', '')" class="bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">
-                            ➕ Parcheggio
-                        </button>
-                        <button onclick="aggiungiSpesaDinamica('ZTL', '', '')" class="bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border border-purple-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">
-                            ➕ ZTL
-                        </button>
-                        <button onclick="aggiungiSpesaDinamica('TASSA/FRONTIERA', '', '')" class="bg-amber-600/10 hover:bg-amber-600/20 text-amber-400 border border-amber-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">
-                            ➕ Tassa
-                        </button>
+                        <button onclick="aggiungiSpesaDinamica('PARCHEGGIO', '', '')" class="bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Parcheggio</button>
+                        <button onclick="aggiungiSpesaDinamica('ZTL', '', '')" class="bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border border-purple-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ ZTL</button>
+                        <button onclick="aggiungiSpesaDinamica('TASSA/FRONTIERA', '', '')" class="bg-amber-600/10 hover:bg-amber-600/20 text-amber-400 border border-amber-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Tassa</button>
                     </div>
                 </div>
 
@@ -209,9 +211,7 @@
                             <input type="text" id="input_carta_gasolio_man" placeholder="Specifica carta" class="hidden w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1 text-white text-xs font-semibold">
                         </div>
                     </div>
-                    <div id="badge_gasolio_calc" class="text-right text-[10px] text-slate-400 font-semibold">
-                        Totale Gasolio: € 0,00
-                    </div>
+                    <div id="badge_gasolio_calc" class="text-right text-[10px] text-slate-400 font-semibold">Totale Gasolio: € 0,00</div>
                 </div>
 
                 <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/40 space-y-2">
@@ -240,9 +240,7 @@
                             <input type="text" id="input_carta_adblue_man" placeholder="Specifica carta" class="hidden w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1 text-white text-xs font-semibold">
                         </div>
                     </div>
-                    <div id="badge_adblue_calc" class="text-right text-[10px] text-slate-400 font-semibold">
-                        Totale AdBlue: € 0,00
-                    </div>
+                    <div id="badge_adblue_calc" class="text-right text-[10px] text-slate-400 font-semibold">Totale AdBlue: € 0,00</div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -262,19 +260,17 @@
             </div>
         </div>
 
+        <!-- FOTO SCONTRINI -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
-            <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                📸 Scontrini e Ricevute
-            </h3>
+            <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">📸 Scontrini e Ricevute</h3>
             <div class="space-y-3">
                 <p class="text-[11px] text-slate-400">Scatta o aggiungi foto illimitate degli scontrini per questo foglio giornaliero.</p>
                 <input type="file" id="input_foto_scontrino" accept="image/*" multiple onchange="caricaFotoScontrini()" class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600/20 file:text-blue-400 hover:file:bg-blue-600/30 cursor-pointer">
-                
-                <div id="container_anteprima_foto" class="grid grid-cols-3 gap-2 pt-2">
-                    </div>
+                <div id="container_anteprima_foto" class="grid grid-cols-3 gap-2 pt-2"></div>
             </div>
         </div>
 
+        <!-- IMPOSTAZIONI STAMPA -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-5 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3">⚙️ Impostazioni PDF</h3>
             <div class="flex items-center justify-between">
@@ -286,23 +282,18 @@
             </div>
         </div>
 
+        <!-- PULSANTI AZIONE -->
         <div class="space-y-3">
-            <button onclick="generaStampaGiornata()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-extrabold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase">
-                📄 GENERA E SALVA PDF DI GIORNATA
-            </button>
-
+            <button onclick="generaStampaGiornata()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-extrabold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase">📄 GENERA E SALVA PDF DI GIORNATA</button>
             <div class="grid grid-cols-2 gap-3 mt-2">
-                <button onclick="giornoSuccessivo()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/20 active:scale-[0.98] font-bold py-3.5 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1">
-                    ➡️ Giorno Successivo
-                </button>
-                <button onclick="confermaFineViaggio()" class="bg-red-950/30 hover:bg-red-900/40 text-red-400 border border-red-500/20 active:scale-[0.98] font-bold py-3.5 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1">
-                    🛑 CHIUDI TOUR
-                </button>
+                <button onclick="giornoSuccessivo()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/20 active:scale-[0.98] font-bold py-3.5 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1">➡️ Giorno Successivo</button>
+                <button onclick="confermaFineViaggio()" class="bg-red-950/30 hover:bg-red-900/40 text-red-400 border border-red-500/20 active:scale-[0.98] font-bold py-3.5 rounded-xl transition-all text-xs uppercase flex items-center justify-center gap-1">🛑 CHIUDI TOUR</button>
             </div>
         </div>
 
     </div>
 
+    <!-- TEMPLATE DI STAMPA PDF GIORNATA -->
     <div id="pdf-template" class="hidden">
         <div class="flex justify-between items-end border-b-2 border-slate-800 pb-3 mb-4">
             <div>
@@ -313,54 +304,26 @@
                     info@iannuccigroup.com — www.iannuccigroup.com
                 </p>
             </div>
-            <div class="text-right text-[8pt] text-slate-500">
-                P.IVA: 01874800608
-            </div>
+            <div class="text-right text-[8pt] text-slate-500">P.IVA: 01874800608</div>
         </div>
-
         <div class="bg-slate-800 text-white text-center font-bold text-sm py-1.5 uppercase tracking-wide mb-4" style="background-color: #2d3748 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
             Foglio di Viaggio / Ordine di Servizio — Resoconto del <span id="pdf_data_foglio">-</span>
         </div>
-
         <table class="w-full mb-3">
             <tr>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Autista</span>
-                    <span id="pdf_val_autista" class="font-bold text-[11pt] text-slate-900">-</span>
-                </td>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Bus N° / Targa</span>
-                    <span id="pdf_val_bus_targa" class="font-bold text-[11pt] text-slate-900">-</span>
-                </td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Autista</span><span id="pdf_val_autista" class="font-bold text-[11pt] text-slate-900">-</span></td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Bus N° / Targa</span><span id="pdf_val_bus_targa" class="font-bold text-[11pt] text-slate-900">-</span></td>
             </tr>
             <tr>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Cliente (Agenzia)</span>
-                    <span id="pdf_val_cliente" class="font-bold text-[11.5pt] text-blue-900">-</span>
-                </td>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Viaggio (N° / Tipo)</span>
-                    <span id="pdf_val_viaggio" class="font-bold text-[11pt] text-slate-900">-</span>
-                </td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Cliente (Agenzia)</span><span id="pdf_val_cliente" class="font-bold text-[11.5pt] text-blue-900">-</span></td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Viaggio (N° / Tipo)</span><span id="pdf_val_viaggio" class="font-bold text-[11pt] text-slate-900">-</span></td>
             </tr>
             <tr>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Partenza (Inizio Tratta)</span>
-                    <span id="pdf_val_tratta_inizio" class="font-semibold text-[10pt] text-slate-800">-</span>
-                </td>
-                <td class="w-1/2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Arrivo (Fine Tratta)</span>
-                    <span id="pdf_val_tratta_fine" class="font-bold text-[10.5pt] text-slate-900">-</span>
-                </td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Partenza (Inizio Tratta)</span><span id="pdf_val_tratta_inizio" class="font-semibold text-[10pt] text-slate-800">-</span></td>
+                <td class="w-1/2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Arrivo (Fine Tratta)</span><span id="pdf_val_tratta_fine" class="font-bold text-[10.5pt] text-slate-900">-</span></td>
             </tr>
-            <tr>
-                <td colspan="2">
-                    <span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Acconto Ricevuto (Informativo)</span>
-                    <span id="pdf_val_acconto" class="font-bold text-[10pt] text-amber-700">-</span>
-                </td>
-            </tr>
+            <tr><td colspan="2"><span class="block text-[7.5pt] uppercase text-slate-500 font-bold">Acconto Ricevuto (Informativo)</span><span id="pdf_val_acconto" class="font-bold text-[10pt] text-amber-700">-</span></td></tr>
         </table>
-
         <table class="w-full mb-4">
             <thead>
                 <tr>
@@ -377,7 +340,6 @@
                 </tr>
             </tbody>
         </table>
-
         <div class="mt-4">
             <span class="block text-[9pt] font-extrabold uppercase tracking-wider text-slate-800 mb-1">Rendiconto Spese di Viaggio</span>
             <table class="w-full">
@@ -389,8 +351,7 @@
                         <th class="w-1/6 text-right">Importo (€)</th>
                     </tr>
                 </thead>
-                <tbody id="pdf_spese_tbody">
-                    </tbody>
+                <tbody id="pdf_spese_tbody"></tbody>
                 <tfoot>
                     <tr class="font-extrabold text-[10.5pt]" style="background-color: #e2e8f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
                         <td colspan="3" class="text-right">TOTALE SPESE DEL GIORNO:</td>
@@ -399,14 +360,13 @@
                 </tfoot>
             </table>
         </div>
-
         <div id="pdf_sezione_scontrini" class="hidden mt-8">
             <span class="block text-[9pt] font-extrabold uppercase tracking-wider text-slate-800 border-b border-slate-300 pb-1 mb-3">Allegati Ricevute e Scontrini</span>
-            <div id="pdf_galleria_scontrini" class="grid grid-cols-2 gap-4">
-                </div>
+            <div id="pdf_galleria_scontrini" class="grid grid-cols-2 gap-4"></div>
         </div>
     </div>
 
+    <!-- TEMPLATE DI STAMPA PDF RIEPILOGO FINALE TOUR -->
     <div id="pdf-summary-template" class="hidden">
         <div class="flex justify-between items-end border-b-2 border-slate-800 pb-3 mb-4">
             <div>
@@ -414,7 +374,6 @@
                 <p class="text-xs text-slate-600 font-bold uppercase tracking-wider">RIEPILOGO GENERALE DI CHIUSURA TOUR</p>
             </div>
         </div>
-
         <table class="w-full mb-4">
             <tr>
                 <td><strong>Autista:</strong> <span id="summary_val_autista">-</span></td>
@@ -422,7 +381,6 @@
                 <td><strong>Bus/Targa:</strong> <span id="summary_val_bus">-</span></td>
             </tr>
         </table>
-
         <div class="mt-4">
             <span class="block text-[10pt] font-extrabold uppercase text-slate-800 mb-1">Riepilogo Chilometri per Tappe Giornaliere</span>
             <table class="w-full">
@@ -435,11 +393,9 @@
                         <th class="text-right">Totale KM</th>
                     </tr>
                 </thead>
-                <tbody id="summary_km_tbody">
-                    </tbody>
+                <tbody id="summary_km_tbody"></tbody>
             </table>
         </div>
-
         <div class="mt-6">
             <span class="block text-[10pt] font-extrabold uppercase text-slate-800 mb-1">Riepilogo Spese Aggregate dell'Intero Tour</span>
             <table class="w-full">
@@ -449,69 +405,74 @@
                         <th class="text-right">Importo Complessivo (€)</th>
                     </tr>
                 </thead>
-                <tbody id="summary_spese_tbody">
-                    </tbody>
+                <tbody id="summary_spese_tbody"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- MODALE NOTIFICA TAPPA SALVATA -->
     <div id="modal_giorno_successivo" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-xs text-center shadow-2xl">
             <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">➡️</div>
             <h3 class="text-white font-bold text-lg mb-1">Tappa Registrata!</h3>
             <p class="text-xs text-slate-300 mb-6">La tappa odierna è stata archiviata nel tour. I KM di arrivo e la destinazione sono stati impostati per domani.</p>
-            <button onclick="chiudiModal('modal_giorno_successivo')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition-all text-xs uppercase">
-                Continua Viaggio
-            </button>
+            <button onclick="chiudiModal('modal_giorno_successivo')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition-all text-xs uppercase">Continua Viaggio</button>
         </div>
     </div>
 
+    <!-- MODALE CUSTOM ALERT -->
     <div id="modal_custom_alert" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-xs text-center shadow-2xl">
             <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">⚠️</div>
             <h3 id="alert_title" class="text-white font-bold text-lg mb-1">Attenzione</h3>
             <p id="alert_message" class="text-xs text-slate-300 mb-6">Messaggio di errore.</p>
-            <button onclick="chiudiModal('modal_custom_alert')" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl transition-all text-xs uppercase">
-                Ok, ho capito
-            </button>
+            <button onclick="chiudiModal('modal_custom_alert')" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl transition-all text-xs uppercase">Ok, ho capito</button>
         </div>
     </div>
 
+    <!-- MODALE CUSTOM CONFIRM -->
     <div id="modal_custom_confirm" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-xs text-center shadow-2xl">
             <div id="confirm_icon" class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">❓</div>
             <h3 id="confirm_title" class="text-white font-bold text-lg mb-1">Sei sicuro?</h3>
             <p id="confirm_message" class="text-xs text-slate-300 mb-6">Operazione.</p>
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="chiudiModal('modal_custom_confirm')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl transition-all text-xs uppercase">
-                    No, Annulla
-                </button>
-                <button id="btn_confirm_proceed" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all text-xs uppercase">
-                    Sì, Procedi
-                </button>
+                <button onclick="chiudiModal('modal_custom_confirm')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl transition-all text-xs uppercase">No, Annulla</button>
+                <button id="btn_confirm_proceed" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all text-xs uppercase">Sì, Procedi</button>
             </div>
         </div>
     </div>
 
     <script>
         let globalConfirmCallback = null;
-        
         let storicoTourGiorni = [];
         let fotoScontriniCorrenti = [];
         let registroSpeseDinamiche = [];
 
+        // REGISTRAZIONE AUTOMATICA DEL SERVICE WORKER (PWA)
         window.addEventListener("DOMContentLoaded", () => {
             const inputData = document.getElementById("input_data");
             if (inputData && !inputData.value) {
                 const oggi = new Date();
-                inputData.value = oggi.toISOString().split('T')[0];
+                inputData.value = formattaDataISO(oggi);
             }
 
             caricaDatiLocalStorage();
             attivazioneMaiuscoloIstantaneo();
             collegaCalcoliInTempoReale();
             renderSpeseDinamiche();
+
+            // Attivazione del Service Worker per l'installazione nativa
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('PWA Service Worker registrato correttamente!'))
+                .catch(err => console.error('Errore registrazione Service Worker:', err));
+            }
         });
+
+        function formattaDataISO(data) {
+            return data.toISOString().split('T')[0];
+        }
 
         function attivazioneMaiuscoloIstantaneo() {
             const inputTesto = ["input_autista", "input_bus", "input_targa", "input_cliente", "input_viaggio", "input_tratta_inizio", "input_tratta_fine", "input_carta_gasolio_man", "input_carta_adblue_man"];
@@ -554,7 +515,6 @@
             salvaDatiLocalStorage();
         }
 
-        // --- GESTIONE SPESE DINAMICHE ---
         function aggiungiSpesaDinamica(tipo, localita = "", importo = "") {
             const nuovaSpesa = {
                 id: Date.now() + Math.random().toString(36).substring(2, 7),
@@ -588,16 +548,13 @@
         function renderSpeseDinamiche() {
             const container = document.getElementById("container_spese_dinamiche");
             container.innerHTML = "";
-
             if (registroSpeseDinamiche.length === 0) {
                 container.innerHTML = `<p class="text-[10px] text-slate-500 italic text-center py-2">Nessun costo accessorio inserito oggi</p>`;
                 return;
             }
-
             registroSpeseDinamiche.forEach(spesa => {
                 const div = document.createElement("div");
                 div.className = "flex gap-2 items-center bg-slate-900 p-2.5 rounded-xl border border-slate-800 shadow-md";
-                
                 let badgeColor = "text-blue-400 bg-blue-500/10 border-blue-500/20";
                 if (spesa.tipo === "ZTL") badgeColor = "text-purple-400 bg-purple-500/10 border-purple-500/20";
                 if (spesa.tipo === "TASSA/FRONTIERA") badgeColor = "text-amber-400 bg-amber-500/10 border-amber-500/20";
@@ -608,9 +565,7 @@
                     </div>
                     <input type="text" value="${spesa.localita}" placeholder="LOCALITÀ" onblur="aggiornaValoreSpesaDinamica('${spesa.id}', 'localita', this.value); this.value = this.value.toUpperCase();" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1.5 text-white text-xs font-semibold uppercase focus:outline-none focus:border-blue-500">
                     <input type="number" step="0.01" value="${spesa.importo || ''}" placeholder="€ 0.00" oninput="aggiornaValoreSpesaDinamica('${spesa.id}', 'importo', this.value)" class="w-20 bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1.5 text-white text-xs font-bold text-right focus:outline-none focus:border-blue-500">
-                    <button onclick="rimuoviSpesaDinamica('${spesa.id}')" class="text-red-500 hover:bg-red-500/10 p-1.5 rounded-lg font-bold text-xs shrink-0 transition-all select-none">
-                        ❌
-                    </button>
+                    <button onclick="rimuoviSpesaDinamica('${spesa.id}')" class="text-red-500 hover:bg-red-500/10 p-1.5 rounded-lg font-bold text-xs shrink-0 transition-all select-none">❌</button>
                 `;
                 container.appendChild(div);
             });
@@ -619,14 +574,12 @@
         function caricaFotoScontrini() {
             const fileInput = document.getElementById("input_foto_scontrino");
             const galleria = document.getElementById("container_anteprima_foto");
-            
             if (fileInput.files) {
                 Array.from(fileInput.files).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         const base64Img = e.target.result;
                         fotoScontriniCorrenti.push(base64Img);
-                        
                         const div = document.createElement("div");
                         div.className = "relative bg-slate-800 rounded-lg overflow-hidden aspect-square border border-slate-700";
                         div.innerHTML = `
@@ -689,7 +642,6 @@
                 const el = document.getElementById(id);
                 if (el) el.addEventListener("input", salvaDatiLocalStorage);
             });
-            
             document.getElementById("opt_hide_zero").addEventListener("change", salvaDatiLocalStorage);
         }
 
@@ -698,7 +650,6 @@
                 localStorage.setItem("fv_autista", document.getElementById("input_autista").value);
                 localStorage.setItem("fv_bus", document.getElementById("input_bus").value);
                 localStorage.setItem("fv_targa", document.getElementById("input_targa").value);
-                
                 const dataSaved = document.getElementById("input_data").value;
                 if (dataSaved) localStorage.setItem("fv_data", dataSaved);
 
@@ -738,7 +689,6 @@
                 document.getElementById("input_autista").value = localStorage.getItem("fv_autista") || "";
                 document.getElementById("input_bus").value = localStorage.getItem("fv_bus") || "";
                 document.getElementById("input_targa").value = localStorage.getItem("fv_targa") || "";
-                
                 const dataSaved = localStorage.getItem("fv_data");
                 if (dataSaved) document.getElementById("input_data").value = dataSaved;
 
@@ -784,7 +734,6 @@
                     `;
                     galleria.appendChild(div);
                 });
-
                 aggiornaTitoloDocumento();
             } catch(e) {
                 console.error("Errore lettura LocalStorage:", e);
@@ -823,8 +772,7 @@
             renderSpeseDinamiche();
 
             const oggi = new Date();
-            document.getElementById("input_data").value = oggi.toISOString().split('T')[0];
-
+            document.getElementById("input_data").value = formattaDataISO(oggi);
             salvaDatiLocalStorage();
             document.getElementById("badge_km_totali").innerText = "0 KM Percorsi Oggi";
             document.getElementById("badge_gasolio_calc").innerText = "Totale Gasolio: € 0,00";
@@ -832,14 +780,9 @@
         }
 
         function confermaInizioViaggio() {
-            apriConfirm(
-                "🚀",
-                "Nuovo Viaggio?",
-                "Vuoi iniziare un nuovo viaggio? Verranno azzerate le tappe correnti, il cliente, i chilometri, il registro scontrini e lo storico tour. I dati dell'autista, del bus e della targa rimarranno salvati sul telefono.",
-                () => {
-                    eseguiTabulaRasaCompleta();
-                }
-            );
+            apriConfirm("🚀", "Nuovo Viaggio?", "Vuoi iniziare un nuovo viaggio? Verranno azzerate le tappe correnti, il cliente, i chilometri, il registro scontrini e lo storico tour. I dati dell'autista, del bus e della targa rimarranno salvati sul telefono.", () => {
+                eseguiTabulaRasaCompleta();
+            });
         }
 
         function salvaTappaInStorico() {
@@ -918,13 +861,12 @@
             
             const dataCorrente = new Date(document.getElementById("input_data").value);
             dataCorrente.setDate(dataCorrente.getDate() + 1);
-            document.getElementById("input_data").value = dataCorrente.toISOString().split('T')[0];
+            document.getElementById("input_data").value = formattaDataISO(dataCorrente);
 
             salvaDatiLocalStorage();
             document.getElementById("badge_km_totali").innerText = "0 KM Percorsi Oggi";
             document.getElementById("badge_gasolio_calc").innerText = "Totale Gasolio: € 0,00";
             document.getElementById("badge_adblue_calc").innerText = "Totale AdBlue: € 0,00";
-
             document.getElementById("modal_giorno_successivo").classList.remove("hidden");
         }
 
@@ -933,20 +875,14 @@
             apriAlert("Tour Concluso", "Il tour corrente è stato salvato e archiviato. La schermata è stata azzerata e ripulita, pronta per un nuovo inserimento.");
         }
 
-        // NUOVA FUNZIONE DI GENERAZIONE EXCEL (.xlsx)
+        // ESPORTAZIONE EXCEL MULTI-SCHEDA DEL TOUR
         function generaExcelTour() {
             if (storicoTourGiorni.length === 0) return;
-
             const autista = document.getElementById("input_autista").value.trim() || "AUTISTA";
             const cliente = document.getElementById("input_cliente").value.trim() || "AGENZIA";
 
-            // Foglio 1: Tappe e Chilometri
-            const righeKM = [];
-            righeKM.push(["Data", "Tratta (Da -> A)", "KM Inizio", "KM Fine", "Totale KM"]);
-            
-            // Foglio 2: Spese Dettagliate
-            const righeSpese = [];
-            righeSpese.push(["Data", "Categoria Spesa", "Descrizione / Dettaglio", "Importo (€)"]);
+            const righeKM = [["Data", "Tratta (Da -> A)", "KM Inizio", "KM Fine", "Totale KM"]];
+            const righeSpese = [["Data", "Categoria Spesa", "Descrizione / Dettaglio", "Importo (€)"]];
 
             const nomiVoci = {
                 parch: "Parcheggio Bus / Checkpoint",
@@ -964,64 +900,37 @@
                 const dFormato = `${dParti[2] || '00'}/${dParti[1] || '00'}/${dParti[0] || '00'}`;
                 const totKMGiorno = Math.max(0, g.kmFine - g.kmInizio);
 
-                // Aggiunta dati chilometrici
-                righeKM.push([
-                    dFormato,
-                    g.tratta.toUpperCase(),
-                    g.kmInizio,
-                    g.kmFine,
-                    totKMGiorno
-                ]);
+                righeKM.push([dFormato, g.tratta.toUpperCase(), g.kmInizio, g.kmFine, totKMGiorno]);
 
-                // Aggiunta spese giorno se maggiori di zero
                 for (let chiave in g.spese) {
                     const importo = g.spese[chiave] || 0;
                     if (importo > 0) {
-                        let desc = "";
-                        if (chiave === "gasolio") {
-                            desc = "Rifornimento carburante diesel per tragitto";
-                        } else if (chiave === "adblue") {
-                            desc = "Rifornimento additivo AdBlue per bus";
-                        } else if (chiave === "pasti") {
-                            desc = "Rimborso vitto / pasto autista di servizio";
-                        } else if (chiave === "hotel") {
-                            desc = "Soggiorno e pernottamento hotel autista";
-                        } else if (chiave === "varie") {
-                            desc = "Altre spese operative documentate";
-                        } else {
-                            desc = `Spesa registrata per ${nomiVoci[chiave]}`;
-                        }
+                        let desc = `Spesa registrata per ${nomiVoci[chiave]}`;
+                        if (chiave === "gasolio") desc = "Rifornimento carburante diesel per tragitto";
+                        else if (chiave === "adblue") desc = "Rifornimento additivo AdBlue per bus";
+                        else if (chiave === "pasti") desc = "Rimborso vitto / pasto autista di servizio";
+                        else if (chiave === "hotel") desc = "Soggiorno e pernottamento hotel autista";
+                        else if (chiave === "varie") desc = "Altre spese operative documentate";
 
-                        righeSpese.push([
-                            dFormato,
-                            nomiVoci[chiave] || chiave.toUpperCase(),
-                            desc,
-                            importo
-                        ]);
+                        righeSpese.push([dFormato, nomiVoci[chiave] || chiave.toUpperCase(), desc, importo]);
                     }
                 }
             });
 
             if (typeof XLSX !== 'undefined') {
                 const wb = XLSX.utils.book_new();
-                
                 const wsKM = XLSX.utils.aoa_to_sheet(righeKM);
                 const wsSpese = XLSX.utils.aoa_to_sheet(righeSpese);
 
-                // Dimensione automatica colonne
                 wsKM['!cols'] = [{wch: 12}, {wch: 35}, {wch: 12}, {wch: 12}, {wch: 12}];
                 wsSpese['!cols'] = [{wch: 12}, {wch: 30}, {wch: 45}, {wch: 15}];
 
                 XLSX.utils.book_append_sheet(wb, wsKM, "Tappe e Chilometri");
                 XLSX.utils.book_append_sheet(wb, wsSpese, "Spese Dettagliate");
 
-                // Generazione nome file Excel
-                const dataOggi = new Date().toISOString().split('T')[0];
+                const dataOggi = formattaDataISO(new Date());
                 const nomeFile = `tour-${cliente}-${autista}-${dataOggi}.xlsx`.toLowerCase().replace(/\s+/g, '-');
-                
                 XLSX.writeFile(wb, nomeFile);
-            } else {
-                console.error("Errore: Libreria SheetJS per Excel non rilevata!");
             }
         }
 
@@ -1031,30 +940,17 @@
                 salvaTappaInStorico();
             }
 
-            apriConfirm(
-                "🛑",
-                "Chiusura Tour definitivo",
-                "Vuoi chiudere definitivamente il tour attuale? Tutte le spese correnti e i chilometri storici registrati verranno azzerati per lasciar spazio al prossimo viaggio.",
-                () => {
-                    setTimeout(() => {
-                        apriConfirm(
-                            "📊",
-                            "Generare Resoconto Finale?",
-                            "Vuoi generare il resoconto completo dei KM e delle spese del tour in formato PDF ed Excel dettagliato?",
-                            () => {
-                                // Generazione PDF di chiusura
-                                lanciaStampaRiepilogoGenerale();
-                                // Generazione Excel di chiusura (.xlsx)
-                                generaExcelTour();
-                                setTimeout(chiusuraEAzzeramentoTotaleTour, 1500); 
-                            },
-                            () => {
-                                chiusuraEAzzeramentoTotaleTour();
-                            }
-                        );
-                    }, 400);
-                }
-            );
+            apriConfirm("🛑", "Chiusura Tour definitivo", "Vuoi chiudere definitivamente il tour attuale? Tutte le spese correnti e i chilometri storici registrati verranno azzerati per lasciar spazio al prossimo viaggio.", () => {
+                setTimeout(() => {
+                    apriConfirm("📊", "Generare Resoconto Finale?", "Vuoi generare il resoconto completo dei KM e delle spese del tour in formato PDF ed Excel dettagliato?", () => {
+                        lanciaStampaRiepilogoGenerale();
+                        generaExcelTour();
+                        setTimeout(chiusuraEAzzeramentoTotaleTour, 1500); 
+                    }, () => {
+                        chiusuraEAzzeramentoTotaleTour();
+                    });
+                }, 400);
+            });
         }
 
         function lanciaStampaRiepilogoGenerale() {
@@ -1069,13 +965,11 @@
 
             const kmTbody = document.getElementById("summary_km_tbody");
             kmTbody.innerHTML = "";
-            
             let macroSpese = { parch: 0, ztl: 0, tasse: 0, gasolio: 0, adblue: 0, pasti: 0, hotel: 0, varie: 0 };
 
             storicoTourGiorni.forEach(g => {
                 const tr = document.createElement("tr");
                 const totKMGiorno = Math.max(0, g.kmFine - g.kmInizio);
-                
                 const dParti = g.data.split("-");
                 const dFormato = `${dParti[2] || '00'}/${dParti[1] || '00'}/${dParti[0] || '00'}`;
 
@@ -1095,7 +989,6 @@
 
             const speseTbody = document.getElementById("summary_spese_tbody");
             speseTbody.innerHTML = "";
-            
             const nomiVoci = {
                 parch: "Parcheggi Bus e Checkpoint",
                 ztl: "ZTL (Zone a Traffico Limitato)",
@@ -1153,7 +1046,6 @@
             const kmPartenza = parseFloat(document.getElementById("input_km_partenza").value) || 0;
             const kmArrivo = parseFloat(document.getElementById("input_km_arrivo").value) || 0;
             const kmTotali = Math.max(0, kmArrivo - kmPartenza);
-
             const optHideZero = document.getElementById("opt_hide_zero").checked;
 
             const dataVal = document.getElementById("input_data").value;
@@ -1170,7 +1062,7 @@
             document.getElementById("pdf_val_viaggio").innerText = viaggio.toUpperCase();
             document.getElementById("pdf_val_tratta_inizio").innerText = trattaInizio.toUpperCase();
             document.getElementById("pdf_val_tratta_fine").innerText = trataFine.toUpperCase();
-            document.getElementById("pdf_val_acconto").innerText = acconto > 0 ? `€ ${acconto.toFixed(2).replace('.', ',')} (Puro titolo informativo ed esterno ai conteggi delle spese vive)` : 'Nessun acconto registrato';
+            document.getElementById("pdf_val_acconto").innerText = acconto > 0 ? `€ ${acconto.toFixed(2).replace('.', ',')} (Informativo)` : 'Nessun acconto registrato';
 
             document.getElementById("pdf_val_km_partenza").innerText = kmPartenza > 0 ? kmPartenza.toLocaleString('it-IT') : '-';
             document.getElementById("pdf_val_km_arrivo").innerText = kmArrivo > 0 ? kmArrivo.toLocaleString('it-IT') : '-';
@@ -1178,14 +1070,12 @@
 
             const tbody = document.getElementById("pdf_spese_tbody");
             tbody.innerHTML = "";
-
             let sommaTotaleSpese = 0;
 
             registroSpeseDinamiche.forEach(spesa => {
                 const importoFloat = parseFloat(spesa.importo) || 0;
                 if (!(optHideZero && importoFloat === 0)) {
                     sommaTotaleSpese += importoFloat;
-                    
                     let descrizioneDettaglio = "";
                     let tipoVisualizzato = "";
                     
@@ -1199,7 +1089,6 @@
                         tipoVisualizzato = "Tasse / Frontiera";
                         descrizioneDettaglio = spesa.localita ? `Oneri transito transfrontaliero (Dogana: ${spesa.localita})` : "Tasse transito stradale / frontiera doganale";
                     }
-
                     inserisciRigaSpesa(tbody, dataStringa, tipoVisualizzato, descrizioneDettaglio, importoFloat);
                 }
             });
@@ -1269,7 +1158,6 @@
             }
 
             aggiornaTitoloDocumento();
-
             const containerStampa = document.getElementById("pdf-template");
             containerStampa.classList.remove("hidden");
             
@@ -1290,7 +1178,6 @@
             tbody.appendChild(tr);
         }
 
-        // --- SISTEMA DI POPUP ALERT E CONFERMA CUSTOM (SOSTITUTI DI ALERT/CONFIRM) ---
         function apriAlert(titolo, messaggio) {
             document.getElementById("alert_title").innerText = titolo;
             document.getElementById("alert_message").innerText = messaggio;
@@ -1301,22 +1188,14 @@
             document.getElementById("confirm_icon").innerText = icona;
             document.getElementById("confirm_title").innerText = titolo;
             document.getElementById("confirm_message").innerText = messaggio;
-            
             const btnSì = document.getElementById("btn_confirm_proceed");
-            
-            // Rimuove eventuali listener precedenti per evitare attivazioni doppie
             const nuovoBtnSì = btnSì.cloneNode(true);
             btnSì.parentNode.replaceChild(nuovoBtnSì, btnSì);
-            
             nuovoBtnSì.addEventListener("click", () => {
                 chiudiModal("modal_custom_confirm");
                 if (callbackSì) callbackSì();
             });
-
-            const modal = document.getElementById("modal_custom_confirm");
-            modal.classList.remove("hidden");
-
-            // Gestione opzionale del callback del "No" o annullamento
+            document.getElementById("modal_custom_confirm").classList.remove("hidden");
             globalConfirmCallback = callbackNo;
         }
     </script>
