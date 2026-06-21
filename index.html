@@ -22,49 +22,39 @@
 </head>
 <body class="bg-slate-950 text-slate-200">
 <div class="max-w-md mx-auto px-4 pt-6 pb-24">
-    <!-- HEADER -->
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-xl font-extrabold text-white">IANNUCCI S.R.L.</h1>
             <p class="text-[10px] text-blue-400 font-bold uppercase">Foglio di Viaggio Digitale</p>
         </div>
-        <button onclick="alert('Inizio Tour')" class="bg-blue-600/20 border border-blue-500/30 text-blue-400 text-[10px] px-3 py-2 rounded-xl font-bold">🚀 INIZIA TOUR</button>
+        <button onclick="chiudiTour()" class="bg-red-900/30 border border-red-500/30 text-red-400 text-[10px] px-3 py-2 rounded-xl font-bold active:scale-95">🛑 CHIUDI TOUR</button>
     </div>
 
-    <!-- SEZIONE PERSONALE -->
     <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 mb-4 space-y-3">
-        <input type="text" id="autista" placeholder="NOME AUTISTA" class="w-full bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm">
+        <input type="text" id="autista" placeholder="NOME AUTISTA" class="w-full bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm" oninput="salvaPersistenti()">
         <div class="grid grid-cols-2 gap-2">
-            <input type="text" id="bus" placeholder="BUS N°" class="bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm">
-            <input type="text" id="targa" placeholder="TARGA" class="bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm">
+            <input type="text" id="bus" placeholder="BUS N°" class="bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm" oninput="salvaPersistenti()">
+            <input type="text" id="targa" placeholder="TARGA" class="bg-slate-800 p-3 rounded-xl font-bold uppercase text-sm" oninput="salvaPersistenti()">
         </div>
         <input type="date" id="data" class="w-full bg-slate-800 p-3 rounded-xl font-bold text-sm">
     </div>
 
-    <!-- KM -->
     <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 mb-4">
         <h3 class="text-[10px] font-bold text-blue-400 uppercase mb-2">🗺️ Rilevamento KM</h3>
         <div class="grid grid-cols-2 gap-3">
             <input type="number" id="km_inizio" placeholder="KM Inizio" class="bg-slate-800 p-3 rounded-xl font-bold text-sm">
-            <input type="number" id="km_fine" placeholder="KM Fine" class="bg-slate-800 p-3 rounded-xl font-bold text-sm">
+            <input type="number" id="km_fine" placeholder="KM Arrivo" class="bg-slate-800 p-3 rounded-xl font-bold text-sm">
         </div>
     </div>
 
-    <!-- RIFORNIMENTI -->
-    <div class="mb-4">
-        <h3 class="text-[10px] font-bold text-amber-400 uppercase mb-2 px-1">⛽ Rifornimenti (Gasolio/AdBlue)</h3>
-        <div id="container_rifornimenti" class="space-y-2"></div>
-        <button onclick="aggiungiRifornimento()" class="w-full mt-2 bg-amber-600/10 text-amber-500 py-2 rounded-xl text-[10px] font-extrabold uppercase">+ Aggiungi Rifornimento</button>
+    <div id="container_rifornimenti" class="space-y-2 mb-4"></div>
+    <div id="container_spese" class="space-y-2 mb-4"></div>
+    
+    <div class="grid grid-cols-2 gap-2 mb-6">
+        <button onclick="aggiungiRifornimento()" class="bg-amber-600/10 text-amber-500 py-2 rounded-xl text-[9px] font-extrabold uppercase">+ Rifornimento</button>
+        <button onclick="aggiungiSpesa()" class="bg-blue-600/10 text-blue-400 py-2 rounded-xl text-[9px] font-extrabold uppercase">+ Spesa</button>
     </div>
 
-    <!-- SPESE -->
-    <div class="mb-6">
-        <h3 class="text-[10px] font-bold text-blue-400 uppercase mb-2 px-1">💶 Spese Operative (Pasti/Park/Varie)</h3>
-        <div id="container_spese" class="space-y-2"></div>
-        <button onclick="aggiungiSpesa()" class="w-full mt-2 bg-blue-600/10 text-blue-400 py-2 rounded-xl text-[10px] font-extrabold uppercase">+ Aggiungi Spesa</button>
-    </div>
-
-    <!-- AZIONI -->
     <div class="space-y-3">
         <button onclick="window.print()" class="w-full bg-white text-slate-950 py-4 rounded-xl font-black uppercase text-sm">📄 GENERA PDF</button>
         <button onclick="inviaUfficio()" class="w-full bg-emerald-600 py-4 rounded-xl font-black uppercase text-white shadow-lg">🚀 INVIA IN DITTA</button>
@@ -75,57 +65,30 @@
 <script>
     let rifornimenti = [];
     let spese = [];
-    document.getElementById('data').valueAsDate = new Date();
+    
+    // Caricamento dati persistenti al caricamento
+    window.onload = () => {
+        document.getElementById('data').valueAsDate = new Date();
+        const saved = JSON.parse(localStorage.getItem('datiPersistenti') || '{}');
+        document.getElementById('autista').value = saved.autista || '';
+        document.getElementById('bus').value = saved.bus || '';
+        document.getElementById('targa').value = saved.targa || '';
+    };
 
-    function aggiungiRifornimento() {
-        rifornimenti.push({ id: Date.now(), tipo: 'GASOLIO', litri: 0, prezzo: 0, tot: 0 });
-        render();
-    }
-    function aggiungiSpesa() {
-        spese.push({ id: Date.now(), tipo: 'PARCHEGGIO', desc: '', imp: 0 });
-        render();
-    }
-
-    function render() {
-        document.getElementById('container_rifornimenti').innerHTML = rifornimenti.map(r => `
-            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 grid grid-cols-2 gap-2 text-[10px]">
-                <select onchange="updateRif(${r.id}, 'tipo', this.value)" class="col-span-2 bg-slate-800 p-1 rounded font-bold"><option>GASOLIO</option><option>ADBLUE</option></select>
-                <input type="number" placeholder="Litri" oninput="updateRif(${r.id}, 'litri', this.value)" class="bg-slate-800 p-1 rounded">
-                <input type="number" step="0.001" placeholder="Prezzo/Lt" oninput="updateRif(${r.id}, 'prezzo', this.value)" class="bg-slate-800 p-1 rounded">
-                <div class="col-span-2 text-right font-bold text-amber-400">Totale: € ${r.tot.toFixed(2)}</div>
-            </div>
-        `).join('');
-
-        document.getElementById('container_spese').innerHTML = spese.map(s => `
-            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-[10px] space-y-1">
-                <select onchange="updateSpesa(${s.id}, 'tipo', this.value)" class="w-full bg-slate-800 p-1 rounded font-bold uppercase"><option>PARCHEGGIO</option><option>AUTOSTRADA</option><option>PASTI</option><option>HOTEL</option><option>VARIE</option></select>
-                <input type="text" placeholder="Descrizione" oninput="updateSpesa(${s.id}, 'desc', this.value)" class="w-full bg-slate-800 p-1 rounded">
-                <input type="number" placeholder="Importo €" oninput="updateSpesa(${s.id}, 'imp', this.value)" class="w-full bg-slate-800 p-1 rounded font-bold text-blue-400">
-            </div>
-        `).join('');
+    function salvaPersistenti() {
+        localStorage.setItem('datiPersistenti', JSON.stringify({
+            autista: document.getElementById('autista').value,
+            bus: document.getElementById('bus').value,
+            targa: document.getElementById('targa').value
+        }));
     }
 
-    function updateRif(id, campo, val) {
-        const r = rifornimenti.find(x => x.id === id);
-        if(r) { r[campo] = parseFloat(val)||0; r.tot = r.litri * r.prezzo; render(); }
-    }
-    function updateSpesa(id, campo, val) {
-        const s = spese.find(x => x.id === id);
-        if(s) s[campo] = val;
-    }
-
-    async function inviaUfficio() {
-        const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js");
-        try {
-            await addDoc(collection(window.db, "viaggi"), {
-                autista: document.getElementById('autista').value,
-                data: document.getElementById('data').value,
-                km: { inizio: document.getElementById('km_inizio').value, fine: document.getElementById('km_fine').value },
-                rifornimenti, spese,
-                timestamp: new Date()
-            });
-            alert("Inviato!");
-        } catch(e) { alert("Errore"); }
+    function chiudiTour() {
+        if(confirm("Chiudere il tour e resettare KM e spese?")) {
+            document.getElementById('km_inizio').value = '';
+            document.getElementById('km_fine').value = '';
+            rifornimenti = []; spese = []; render();
+        }
     }
 
     function giornoSuccessivo() {
@@ -133,6 +96,8 @@
         document.getElementById('km_fine').value = '';
         rifornimenti = []; spese = []; render();
     }
+
+    // ... (Mantieni le funzioni render, update e inviaUfficio del blocco precedente) ...
 </script>
 </body>
 </html>
