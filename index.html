@@ -16,28 +16,6 @@
     <link class="no-print" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%231e3a8a'/%3E%3Cpath d='M400 128H112c-26.5 0-48 21.5-48 48v224c0 17.7 14.3 32 32 32h16c8.8 0 16-7.2 16-16v-16h256v16c0 8.8 7.2 16 16 16h16c17.7 0 32-14.3 32-32V176c0-26.5-21.5-48-48-48zm-24 48v96H136v-96h240zM144 336c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z' fill='white'/%3E%3C/svg%3E">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyB2Dpaitsgpyzs_Np-pIfl9fCLEG_x2UbU",
-    authDomain: "iannucciviaggi.firebaseapp.com",
-    projectId: "iannucciviaggi",
-    storageBucket: "iannucciviaggi.firebasestorage.app",
-    messagingSenderId: "215544582908",
-    appId: "1:215544582908:web:dbb16286e3acbe55b57d79",
-    measurementId: "G-KDT97F4QBB"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  // Esponiamo queste variabili a livello globale per poterle usare nel resto dell'app
-  window.db = getFirestore(app);
-  window.storage = getStorage(app);
-  
-  console.log("Firebase inizializzato con successo!");
-</script>
     <!-- Libreria SheetJS per esportazione in formato Excel nativo (.xlsx) -->
     <script class="no-print" src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,33 +86,6 @@
             <button onclick="confermaInizioViaggio()" class="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs px-3.5 py-2 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-1.5">
                 🚀 INIZIA TOUR
             </button>
-        </div>
-
-        <!-- BANNER INSTALLAZIONE AUTOMATICA SMART (Chrome/Android) -->
-        <div id="banner_installa_android" class="hidden bg-blue-600/20 border border-blue-500/40 p-3.5 rounded-2xl mb-4 flex items-center justify-between shadow-lg">
-            <div class="flex items-center gap-2.5">
-                <span class="text-xl">📲</span>
-                <div>
-                    <p class="text-xs font-bold text-white">Installa sul telefono</p>
-                    <p class="text-[10px] text-slate-300">Aprila a schermo intero come una vera App</p>
-                </div>
-            </div>
-            <button onclick="installaPWA()" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold px-3.5 py-2 rounded-xl transition-all active:scale-95 uppercase">
-                Installa
-            </button>
-        </div>
-
-        <!-- BANNER ISTRUZIONI IPHONE SMART (iOS/Safari) -->
-        <div id="banner_istruzioni_ios" class="hidden bg-slate-900 border border-slate-800 p-3.5 rounded-2xl mb-4 shadow-lg">
-            <div class="flex items-start gap-2.5">
-                <span class="text-xl mt-0.5">🍎</span>
-                <div class="space-y-1">
-                    <p class="text-xs font-bold text-white">Installa su iPhone (Safari)</p>
-                    <p class="text-[10px] text-slate-300 leading-normal">
-                        Premi il tasto <strong>Condividi</strong> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-white font-bold">⇧</span> in basso e seleziona <strong>"Aggiungi alla schermata Home"</strong>.
-                    </p>
-                </div>
-            </div>
         </div>
 
         <!-- SEZIONE PERSONALE -->
@@ -217,16 +168,18 @@
             </div>
         </div>
 
-        <!-- SEZIONE SPESE -->
+        <!-- SEZIONE SPESE DINAMICHE -->
         <div class="bg-slate-900 rounded-2xl p-4 mb-4 border border-slate-800/80 shadow-xl">
             <h3 class="text-xs font-extrabold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
                 💶 Spese di Giornata
             </h3>
             
-            <div class="space-y-3">
+            <div class="space-y-4">
+                
+                <!-- BLOCCO 1: TASSE E PARCHEGGI -->
                 <div class="bg-slate-950/40 p-3 rounded-xl border border-slate-800 space-y-3">
-                    <span class="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider block">🚗 Registro Parcheggi, ZTL e Tasse Doganali</span>
-                    <div id="container_spese_dinamiche" class="space-y-2"></div>
+                    <span class="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider block">🚗 Parcheggi, ZTL e Tasse</span>
+                    <div id="container_spese_viaggio" class="space-y-2"></div>
                     <div class="grid grid-cols-3 gap-1.5 pt-1">
                         <button onclick="aggiungiSpesaDinamica('PARCHEGGIO', '', '')" class="bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Parcheggio</button>
                         <button onclick="aggiungiSpesaDinamica('ZTL', '', '')" class="bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border border-purple-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ ZTL</button>
@@ -234,78 +187,31 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/40 space-y-2">
-                    <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider block">⛽ Rifornimento Gasolio</span>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Litri Gasolio</label>
-                            <input type="number" step="0.01" id="input_gasolio_litri" placeholder="0" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2.5 py-2 text-white text-xs font-semibold">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Prezzo al Litro (€)</label>
-                            <input type="number" step="0.001" id="input_gasolio_prezzo" placeholder="0.000" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2.5 py-2 text-white text-xs font-semibold">
-                        </div>
+                <!-- BLOCCO 2: VITTO, ALLOGGIO E VARIE -->
+                <div class="bg-slate-950/40 p-3 rounded-xl border border-slate-800 space-y-3">
+                    <span class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider block">🛌 Vitto, Alloggio ed Extra</span>
+                    <div id="container_spese_personali" class="space-y-2"></div>
+                    <div class="grid grid-cols-3 gap-1.5 pt-1">
+                        <button onclick="aggiungiSpesaDinamica('PASTO', '', '')" class="bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 border border-emerald-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Pasto</button>
+                        <button onclick="aggiungiSpesaDinamica('HOTEL', '', '')" class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 border border-indigo-500/20 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Hotel</button>
+                        <button onclick="aggiungiSpesaDinamica('VARIE', '', '')" class="bg-slate-600/30 hover:bg-slate-600/50 text-slate-300 border border-slate-500/30 py-2 rounded-lg text-[10px] font-extrabold transition-all uppercase">➕ Spesa Varia</button>
                     </div>
-                    <div>
-                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Modalità / Carta Gasolio</label>
-                        <div class="flex gap-2">
-                            <select id="select_carta_gasolio" onchange="gestisciCarta('gasolio')" class="bg-slate-800 border border-slate-700 text-white text-xs rounded-lg p-2 focus:outline-none">
-                                <option value="NESSUNA">NESSUNA</option>
-                                <option value="ENI">ENI</option>
-                                <option value="DKV">DKV</option>
-                                <option value="SHELL">SHELL</option>
-                                <option value="ESSO">ESSO</option>
-                                <option value="MANUALE">ALTRO / MANUALE</option>
-                            </select>
-                            <input type="text" id="input_carta_gasolio_man" placeholder="Specifica carta" class="hidden w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1 text-white text-xs font-semibold">
-                        </div>
-                    </div>
-                    <div id="badge_gasolio_calc" class="text-right text-[10px] text-slate-400 font-semibold">Totale Gasolio: € 0,00</div>
                 </div>
 
-                <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/40 space-y-2">
-                    <span class="text-[11px] font-extrabold text-blue-400 uppercase tracking-wider block">💧 Rifornimento AdBlue</span>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Litri AdBlue</label>
-                            <input type="number" step="0.01" id="input_adblue_litri" placeholder="0" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2.5 py-2 text-white text-xs font-semibold">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Prezzo al Litro (€)</label>
-                            <input type="number" step="0.001" id="input_adblue_prezzo" placeholder="0.000" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2.5 py-2 text-white text-xs font-semibold">
-                        </div>
+                <!-- BLOCCO 3: RIFORNIMENTI -->
+                <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/40 space-y-3">
+                    <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider block">⛽ Rifornimenti Multipli</span>
+                    <div id="container_rifornimenti" class="space-y-3"></div>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button onclick="aggiungiRifornimento('GASOLIO')" class="bg-amber-600/20 hover:bg-amber-600/30 text-amber-400 border border-amber-500/30 py-2.5 rounded-lg text-[11px] font-extrabold transition-all uppercase">➕ Aggiungi Gasolio</button>
+                        <button onclick="aggiungiRifornimento('ADBLUE')" class="bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 py-2.5 rounded-lg text-[11px] font-extrabold transition-all uppercase">➕ Aggiungi AdBlue</button>
                     </div>
-                    <div>
-                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Modalità / Carta AdBlue</label>
-                        <div class="flex gap-2">
-                            <select id="select_carta_adblue" onchange="gestisciCarta('adblue')" class="bg-slate-800 border border-slate-700 text-white text-xs rounded-lg p-2 focus:outline-none">
-                                <option value="NESSUNA">NESSUNA</option>
-                                <option value="ENI">ENI</option>
-                                <option value="DKV">DKV</option>
-                                <option value="SHELL">SHELL</option>
-                                <option value="ESSO">ESSO</option>
-                                <option value="MANUALE">ALTRO / MANUALE</option>
-                            </select>
-                            <input type="text" id="input_carta_adblue_man" placeholder="Specifica carta" class="hidden w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1 text-white text-xs font-semibold">
-                        </div>
+                    <div class="flex justify-between items-center border-t border-slate-700 pt-2 mt-2">
+                        <div id="badge_gasolio_calc" class="text-[10px] text-amber-400 font-bold">Totale Gasolio: € 0,00</div>
+                        <div id="badge_adblue_calc" class="text-[10px] text-cyan-400 font-bold">Totale AdBlue: € 0,00</div>
                     </div>
-                    <div id="badge_adblue_calc" class="text-right text-[10px] text-slate-400 font-semibold">Totale AdBlue: € 0,00</div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Pasti (€)</label>
-                        <input type="number" step="0.01" id="input_pasti" placeholder="0.00" class="w-full bg-slate-800 border border-slate-700/60 rounded-xl px-3 py-2.5 text-white text-sm font-semibold">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Hotel / Alloggio (€)</label>
-                        <input type="number" step="0.01" id="input_hotel" placeholder="0.00" class="w-full bg-slate-800 border border-slate-700/60 rounded-xl px-3 py-2.5 text-white text-sm font-semibold">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Spese Varie / Extra (€)</label>
-                    <input type="number" step="0.01" id="input_varie" placeholder="0.00" class="w-full bg-slate-800 border border-slate-700/60 rounded-xl px-3 py-2.5 text-white text-sm font-semibold">
-                </div>
             </div>
         </div>
 
@@ -494,10 +400,11 @@
         let globalConfirmCallback = null;
         let storicoTourGiorni = [];
         let fotoScontriniCorrenti = [];
-        let registroSpeseDinamiche = [];
-        let deferredPrompt = null;
+        
+        // NUOVE VARIABILI DI STATO PER LISTE DINAMICHE
+        let registroSpeseDinamiche = []; 
+        let registroRifornimenti = [];
 
-        // REGISTRAZIONE AUTOMATICA DEL SERVICE WORKER (PWA) E RILEVAMENTO OS
         window.addEventListener("DOMContentLoaded", () => {
             const inputData = document.getElementById("input_data");
             if (inputData && !inputData.value) {
@@ -508,66 +415,19 @@
             caricaDatiLocalStorage();
             attivazioneMaiuscoloIstantaneo();
             collegaCalcoliInTempoReale();
-            renderSpeseDinamiche();
-            controllaOSIos();
-
-            // Attivazione del Service Worker per l'installazione nativa (solo se su protocollo http o https standard)
-            if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
-                navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('PWA Service Worker registrato correttamente!'))
-                .catch(err => console.error('Errore registrazione Service Worker:', err));
-            }
-        });
-
-        // INTERCETTAZIONE DELLA RICHIESTA DI INSTALLAZIONE SU ANDROID (Chrome)
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Impedisce a Chrome di mostrare il popup nativo grigio e noioso automaticamente
-            e.preventDefault();
-            // Salva l'evento in memoria per attivarlo sul click del nostro bottone
-            deferredPrompt = e;
-            // Mostra il nostro banner azzurro personalizzato
-            const bannerAndroid = document.getElementById('banner_installa_android');
-            if (bannerAndroid) {
-                bannerAndroid.classList.remove('hidden');
-            }
-        });
-
-        function installaPWA() {
-            if (!deferredPrompt) return;
-            // Mostra il prompt d'installazione ufficiale del telefono
-            deferredPrompt.prompt();
-            // Attende la scelta dell'autista
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('Autista ha installato la PWA con successo!');
-                    // Nasconde il banner azzurro
-                    const bannerAndroid = document.getElementById('banner_installa_android');
-                    if (bannerAndroid) bannerAndroid.classList.add('hidden');
-                }
-                deferredPrompt = null;
-            });
-        }
-
-        // RILEVAMENTO IPHONE (iOS) PER GUIDARE L'INSTALLAZIONE MANUALE CON SAFARI
-        function controllaOSIos() {
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            // Verifica se l'app è già avviata in modalità standalone (quiso già installata su Home)
-            const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
             
-            if (isIOS && !isInStandaloneMode) {
-                const bannerIos = document.getElementById('banner_istruzioni_ios');
-                if (bannerIos) {
-                    bannerIos.classList.remove('hidden');
-                }
-            }
-        }
+            // Render UI iniziale
+            renderSpeseDinamiche();
+            renderRifornimenti();
+            rilevaCambiamenti(); // Forza ricalcolo totali
+        });
 
         function formattaDataISO(data) {
             return data.toISOString().split('T')[0];
         }
 
         function attivazioneMaiuscoloIstantaneo() {
-            const inputTesto = ["input_autista", "input_bus", "input_targa", "input_cliente", "input_viaggio", "input_tratta_inizio", "input_tratta_fine", "input_carta_gasolio_man", "input_carta_adblue_man"];
+            const inputTesto = ["input_autista", "input_bus", "input_targa", "input_cliente", "input_viaggio", "input_tratta_inizio", "input_tratta_fine"];
             inputTesto.forEach(id => {
                 const elemento = document.getElementById(id);
                 if (elemento) {
@@ -576,9 +436,7 @@
                         salvaDatiLocalStorage();
                         aggiornaTitoloDocumento();
                     });
-                    elemento.addEventListener("input", function() {
-                        salvaDatiLocalStorage();
-                    });
+                    elemento.addEventListener("input", salvaDatiLocalStorage);
                 }
             });
         }
@@ -595,73 +453,205 @@
             }
         }
 
-        function gestisciCarta(tipo) {
-            const select = document.getElementById(`select_carta_${tipo}`);
-            const inputMan = document.getElementById(`input_carta_${tipo}_man`);
-            if (select.value === "MANUALE") {
-                inputMan.classList.remove("hidden");
-            } else {
-                inputMan.classList.add("hidden");
-                inputMan.value = "";
-            }
+        /* -------------------------------------------------------------------------- */
+        /* GESTIONE RIFORNIMENTI MULTIPLI                       */
+        /* -------------------------------------------------------------------------- */
+        
+        function aggiungiRifornimento(tipo) {
+            registroRifornimenti.push({
+                id: Date.now() + Math.random().toString(36).substring(2, 7),
+                tipo: tipo,
+                litri: "",
+                prezzo: "",
+                carta: "NESSUNA",
+                cartaManuale: ""
+            });
             salvaDatiLocalStorage();
+            renderRifornimenti();
+            rilevaCambiamenti();
         }
 
-        function aggiungiSpesaDinamica(tipo, localita = "", importo = "") {
+        function rimuoviRifornimento(id) {
+            registroRifornimenti = registroRifornimenti.filter(r => r.id !== id);
+            salvaDatiLocalStorage();
+            renderRifornimenti();
+            rilevaCambiamenti();
+        }
+
+        function aggiornaRifornimento(id, campo, valore) {
+            const rif = registroRifornimenti.find(r => r.id === id);
+            if (rif) {
+                if (campo === 'litri' || campo === 'prezzo') {
+                    rif[campo] = parseFloat(valore) || 0;
+                } else if (campo === 'cartaManuale') {
+                    rif[campo] = valore.toUpperCase();
+                } else {
+                    rif[campo] = valore;
+                }
+                
+                // Se cambio la tendina a qualcosa che non è manuale, pulisco il campo testo
+                if (campo === 'carta' && valore !== 'MANUALE') {
+                    rif.cartaManuale = "";
+                }
+
+                salvaDatiLocalStorage();
+                if (campo === 'carta') renderRifornimenti(); // Ricarica UI per mostrare/nascondere input
+                rilevaCambiamenti(); // Aggiorna totali badge
+            }
+        }
+
+        function renderRifornimenti() {
+            const container = document.getElementById("container_rifornimenti");
+            container.innerHTML = "";
+            
+            if (registroRifornimenti.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-slate-500 italic text-center py-2">Nessun rifornimento registrato</p>`;
+                return;
+            }
+
+            registroRifornimenti.forEach(rif => {
+                const isGasolio = rif.tipo === 'GASOLIO';
+                const color = isGasolio ? 'amber' : 'cyan';
+                const bgClass = isGasolio ? 'bg-amber-500/10 border-amber-500/30' : 'bg-cyan-500/10 border-cyan-500/30';
+                const textClass = isGasolio ? 'text-amber-400' : 'text-cyan-400';
+                
+                const totaleRiga = (parseFloat(rif.litri || 0) * parseFloat(rif.prezzo || 0)).toFixed(2);
+
+                const div = document.createElement("div");
+                div.className = `p-2.5 rounded-xl border border-slate-700 bg-slate-900 shadow-sm relative`;
+                
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${bgClass} ${textClass}">${rif.tipo}</span>
+                        <button onclick="rimuoviRifornimento('${rif.id}')" class="text-red-500 hover:text-red-400 text-xs font-bold px-2 py-1">Rimuovi ❌</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <div>
+                            <label class="block text-[9px] text-slate-400 uppercase mb-1">Litri</label>
+                            <input type="number" step="0.01" value="${rif.litri || ''}" oninput="aggiornaRifornimento('${rif.id}', 'litri', this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs font-semibold focus:border-${color}-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-slate-400 uppercase mb-1">Prezzo/Lt</label>
+                            <input type="number" step="0.001" value="${rif.prezzo || ''}" oninput="aggiornaRifornimento('${rif.id}', 'prezzo', this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs font-semibold focus:border-${color}-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-slate-400 uppercase mb-1">Totale</label>
+                            <div class="text-right text-xs font-bold pt-1.5 ${textClass}">€ ${totaleRiga}</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[9px] text-slate-400 uppercase mb-1">Modalità / Carta di Pagamento</label>
+                        <div class="flex gap-2">
+                            <select onchange="aggiornaRifornimento('${rif.id}', 'carta', this.value)" class="w-1/2 bg-slate-800 border border-slate-700 text-white text-[11px] rounded-lg p-1.5 focus:outline-none">
+                                <option value="NESSUNA" ${rif.carta === 'NESSUNA' ? 'selected' : ''}>Nessuna</option>
+                                <option value="ENI" ${rif.carta === 'ENI' ? 'selected' : ''}>ENI</option>
+                                <option value="DKV" ${rif.carta === 'DKV' ? 'selected' : ''}>DKV</option>
+                                <option value="SHELL" ${rif.carta === 'SHELL' ? 'selected' : ''}>SHELL</option>
+                                <option value="ESSO" ${rif.carta === 'ESSO' ? 'selected' : ''}>ESSO</option>
+                                <option value="MANUALE" ${rif.carta === 'MANUALE' ? 'selected' : ''}>Altro / Manuale</option>
+                            </select>
+                            <input type="text" value="${rif.cartaManuale || ''}" placeholder="SPECIFICA CARTA" onblur="aggiornaRifornimento('${rif.id}', 'cartaManuale', this.value)" class="${rif.carta === 'MANUALE' ? 'w-1/2' : 'hidden'} bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white text-[11px] font-semibold uppercase">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* GESTIONE SPESE GENERICHE MULTIPLE                    */
+        /* -------------------------------------------------------------------------- */
+
+        function aggiungiSpesaDinamica(tipo, testo = "", importo = "") {
             const nuovaSpesa = {
                 id: Date.now() + Math.random().toString(36).substring(2, 7),
                 tipo: tipo,
-                localita: localita,
+                testo: testo, 
                 importo: importo
             };
             registroSpeseDinamiche.push(nuovaSpesa);
             renderSpeseDinamiche();
             salvaDatiLocalStorage();
+            rilevaCambiamenti();
         }
 
         function rimuoviSpesaDinamica(id) {
             registroSpeseDinamiche = registroSpeseDinamiche.filter(spesa => spesa.id !== id);
             renderSpeseDinamiche();
             salvaDatiLocalStorage();
+            rilevaCambiamenti();
         }
 
         function aggiornaValoreSpesaDinamica(id, campo, valore) {
             const spesa = registroSpeseDinamiche.find(s => s.id === id);
             if (spesa) {
-                if (campo === "localita") {
-                    spesa.localita = valore.toUpperCase();
+                if (campo === "testo") {
+                    spesa.testo = valore.toUpperCase();
                 } else if (campo === "importo") {
                     spesa.importo = parseFloat(valore) || 0;
                 }
                 salvaDatiLocalStorage();
+                rilevaCambiamenti();
             }
         }
 
         function renderSpeseDinamiche() {
-            const container = document.getElementById("container_spese_dinamiche");
-            container.innerHTML = "";
-            if (registroSpeseDinamiche.length === 0) {
-                container.innerHTML = `<p class="text-[10px] text-slate-500 italic text-center py-2">Nessun costo accessorio inserito oggi</p>`;
-                return;
-            }
+            const containerViaggio = document.getElementById("container_spese_viaggio");
+            const containerPersonali = document.getElementById("container_spese_personali");
+            
+            containerViaggio.innerHTML = "";
+            containerPersonali.innerHTML = "";
+
+            let countViaggio = 0;
+            let countPersonali = 0;
+
             registroSpeseDinamiche.forEach(spesa => {
+                let badgeColor = "text-slate-400 bg-slate-500/10 border-slate-500/20";
+                let placeholder = "DESCRIZIONE...";
+                let isViaggio = false;
+
+                if (spesa.tipo === "PARCHEGGIO") { badgeColor = "text-blue-400 bg-blue-500/10 border-blue-500/20"; placeholder = "LOCALITÀ"; isViaggio = true; }
+                if (spesa.tipo === "ZTL") { badgeColor = "text-purple-400 bg-purple-500/10 border-purple-500/20"; placeholder = "LOCALITÀ"; isViaggio = true; }
+                if (spesa.tipo === "TASSA/FRONTIERA") { badgeColor = "text-amber-400 bg-amber-500/10 border-amber-500/20"; placeholder = "DOGANA/LUOGO"; isViaggio = true; }
+                
+                if (spesa.tipo === "PASTO") { badgeColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"; placeholder = "RISTORANTE/LOCALITÀ"; }
+                if (spesa.tipo === "HOTEL") { badgeColor = "text-indigo-400 bg-indigo-500/10 border-indigo-500/20"; placeholder = "NOME HOTEL/LOCALITÀ"; }
+                if (spesa.tipo === "VARIE") { badgeColor = "text-slate-300 bg-slate-500/30 border-slate-500/50"; placeholder = "COSA HAI SPESO?"; }
+
                 const div = document.createElement("div");
-                div.className = "flex gap-2 items-center bg-slate-900 p-2.5 rounded-xl border border-slate-800 shadow-md";
-                let badgeColor = "text-blue-400 bg-blue-500/10 border-blue-500/20";
-                if (spesa.tipo === "ZTL") badgeColor = "text-purple-400 bg-purple-500/10 border-purple-500/20";
-                if (spesa.tipo === "TASSA/FRONTIERA") badgeColor = "text-amber-400 bg-amber-500/10 border-amber-500/20";
+                div.className = "flex gap-2 items-center bg-slate-900 p-2 rounded-xl border border-slate-800 shadow-md";
+                
+                let etichettaTipo = spesa.tipo === "TASSA/FRONTIERA" ? "TASSA" : spesa.tipo;
+                if (spesa.tipo === "VARIE") etichettaTipo = "EXTRA";
 
                 div.innerHTML = `
-                    <div class="text-[9px] font-extrabold px-2 py-1 rounded-md border uppercase shrink-0 ${badgeColor} w-20 text-center">
-                        ${spesa.tipo === "TASSA/FRONTIERA" ? "TASSA" : spesa.tipo}
+                    <div class="text-[8px] font-extrabold px-1 py-1.5 rounded-md border uppercase shrink-0 ${badgeColor} w-16 text-center leading-none flex items-center justify-center">
+                        ${etichettaTipo}
                     </div>
-                    <input type="text" value="${spesa.localita}" placeholder="LOCALITÀ" onblur="aggiornaValoreSpesaDinamica('${spesa.id}', 'localita', this.value); this.value = this.value.toUpperCase();" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1.5 text-white text-xs font-semibold uppercase focus:outline-none focus:border-blue-500">
+                    <input type="text" value="${spesa.testo}" placeholder="${placeholder}" onblur="aggiornaValoreSpesaDinamica('${spesa.id}', 'testo', this.value); this.value = this.value.toUpperCase();" class="w-full bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1.5 text-white text-xs font-semibold uppercase focus:outline-none focus:border-blue-500">
                     <input type="number" step="0.01" value="${spesa.importo || ''}" placeholder="€ 0.00" oninput="aggiornaValoreSpesaDinamica('${spesa.id}', 'importo', this.value)" class="w-20 bg-slate-800 border border-slate-700/60 rounded-lg px-2 py-1.5 text-white text-xs font-bold text-right focus:outline-none focus:border-blue-500">
                     <button onclick="rimuoviSpesaDinamica('${spesa.id}')" class="text-red-500 hover:bg-red-500/10 p-1.5 rounded-lg font-bold text-xs shrink-0 transition-all select-none">❌</button>
                 `;
-                container.appendChild(div);
+                
+                if (isViaggio) {
+                    containerViaggio.appendChild(div);
+                    countViaggio++;
+                } else {
+                    containerPersonali.appendChild(div);
+                    countPersonali++;
+                }
             });
+
+            if (countViaggio === 0) containerViaggio.innerHTML = `<p class="text-[10px] text-slate-500 italic text-center py-1">Nessuna spesa inserita</p>`;
+            if (countPersonali === 0) containerPersonali.innerHTML = `<p class="text-[10px] text-slate-500 italic text-center py-1">Nessuna spesa inserita</p>`;
         }
+
+
+        /* -------------------------------------------------------------------------- */
+        /* SCONTRINI E CALCOLI TOTALI                        */
+        /* -------------------------------------------------------------------------- */
 
         function caricaFotoScontrini() {
             const fileInput = document.getElementById("input_foto_scontrino");
@@ -695,47 +685,43 @@
         function collegaCalcoliInTempoReale() {
             const kmPartenza = document.getElementById("input_km_partenza");
             const kmArrivo = document.getElementById("input_km_arrivo");
-            const litriGasolio = document.getElementById("input_gasolio_litri");
-            const prezzoGasolio = document.getElementById("input_gasolio_prezzo");
-            const litriAdblue = document.getElementById("input_adblue_litri");
-            const prezzoAdblue = document.getElementById("input_adblue_prezzo");
             const dataInput = document.getElementById("input_data");
-
-            const rilevaCambiamenti = () => {
-                const part = parseFloat(kmPartenza.value) || 0;
-                const arr = parseFloat(kmArrivo.value) || 0;
-                const totKM = Math.max(0, arr - part);
-                document.getElementById("badge_km_totali").innerText = `${totKM.toLocaleString('it-IT')} KM Percorsi Oggi`;
-
-                const litG = parseFloat(litriGasolio.value) || 0;
-                const prcG = parseFloat(prezzoGasolio.value) || 0;
-                const totGasolio = Math.round(litG * prcG * 100) / 100;
-                document.getElementById("badge_gasolio_calc").innerText = `Totale Gasolio: € ${totGasolio.toFixed(2).replace('.', ',')}`;
-
-                const litA = parseFloat(litriAdblue.value) || 0;
-                const prcA = parseFloat(prezzoAdblue.value) || 0;
-                const totAdblue = Math.round(litA * prcA * 100) / 100;
-                document.getElementById("badge_adblue_calc").innerText = `Totale AdBlue: € ${totAdblue.toFixed(2).replace('.', ',')}`;
-
-                salvaDatiLocalStorage();
-                aggiornaTitoloDocumento();
-            };
 
             kmPartenza.addEventListener("input", rilevaCambiamenti);
             kmArrivo.addEventListener("input", rilevaCambiamenti);
-            litriGasolio.addEventListener("input", rilevaCambiamenti);
-            prezzoGasolio.addEventListener("input", rilevaCambiamenti);
-            litriAdblue.addEventListener("input", rilevaCambiamenti);
-            prezzoAdblue.addEventListener("input", rilevaCambiamenti);
             dataInput.addEventListener("change", rilevaCambiamenti);
-
-            const altreSpese = ["input_pasti", "input_hotel", "input_varie", "input_acconto"];
-            altreSpese.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener("input", salvaDatiLocalStorage);
-            });
-            document.getElementById("opt_hide_zero").addEventListener("change", salvaDatiLocalStorage);
+            
+            const optHide = document.getElementById("opt_hide_zero");
+            if(optHide) optHide.addEventListener("change", salvaDatiLocalStorage);
         }
+
+        function rilevaCambiamenti() {
+            // KM Totali
+            const part = parseFloat(document.getElementById("input_km_partenza").value) || 0;
+            const arr = parseFloat(document.getElementById("input_km_arrivo").value) || 0;
+            const totKM = Math.max(0, arr - part);
+            document.getElementById("badge_km_totali").innerText = `${totKM.toLocaleString('it-IT')} KM Percorsi Oggi`;
+
+            // Totali Rifornimenti Dinamici
+            let totGasolio = 0;
+            let totAdblue = 0;
+
+            registroRifornimenti.forEach(rif => {
+                const parziale = (parseFloat(rif.litri) || 0) * (parseFloat(rif.prezzo) || 0);
+                if (rif.tipo === 'GASOLIO') totGasolio += parziale;
+                if (rif.tipo === 'ADBLUE') totAdblue += parziale;
+            });
+
+            document.getElementById("badge_gasolio_calc").innerText = `Totale Gasolio: € ${totGasolio.toFixed(2).replace('.', ',')}`;
+            document.getElementById("badge_adblue_calc").innerText = `Totale AdBlue: € ${totAdblue.toFixed(2).replace('.', ',')}`;
+
+            salvaDatiLocalStorage();
+            aggiornaTitoloDocumento();
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* LOCAL STORAGE (MEMORIA)                          */
+        /* -------------------------------------------------------------------------- */
 
         function salvaDatiLocalStorage() {
             try {
@@ -753,24 +739,13 @@
                 localStorage.setItem("fv_km_arrivo", document.getElementById("input_km_arrivo").value);
                 localStorage.setItem("fv_acconto", document.getElementById("input_acconto").value);
                 
-                localStorage.setItem("fv_spesa_gasolio_litri", document.getElementById("input_gasolio_litri").value);
-                localStorage.setItem("fv_spesa_gasolio_prezzo", document.getElementById("input_gasolio_prezzo").value);
-                localStorage.setItem("fv_carta_gasolio_sel", document.getElementById("select_carta_gasolio").value);
-                localStorage.setItem("fv_carta_gasolio_man", document.getElementById("input_carta_gasolio_man").value);
-
-                localStorage.setItem("fv_spesa_adblue_litri", document.getElementById("input_adblue_litri").value);
-                localStorage.setItem("fv_spesa_adblue_prezzo", document.getElementById("input_adblue_prezzo").value);
-                localStorage.setItem("fv_carta_adblue_sel", document.getElementById("select_carta_adblue").value);
-                localStorage.setItem("fv_carta_adblue_man", document.getElementById("input_carta_adblue_man").value);
-
-                localStorage.setItem("fv_spesa_pasti", document.getElementById("input_pasti").value);
-                localStorage.setItem("fv_spesa_hotel", document.getElementById("input_hotel").value);
-                localStorage.setItem("fv_spesa_varie", document.getElementById("input_varie").value);
-
                 localStorage.setItem("fv_opt_hide_zero", document.getElementById("opt_hide_zero").checked ? "1" : "0");
                 localStorage.setItem("fv_storico_tour", JSON.stringify(storicoTourGiorni));
                 localStorage.setItem("fv_foto_scontrini", JSON.stringify(fotoScontriniCorrenti));
+                
+                // Salvataggio Liste Dinamiche
                 localStorage.setItem("fv_spese_dinamiche", JSON.stringify(registroSpeseDinamiche));
+                localStorage.setItem("fv_rifornimenti_dinamici", JSON.stringify(registroRifornimenti));
             } catch(e) {
                 console.error("LocalStorage non accessibile:", e);
             }
@@ -791,29 +766,15 @@
                 document.getElementById("input_km_partenza").value = localStorage.getItem("fv_km_partenza") || "";
                 document.getElementById("input_km_arrivo").value = localStorage.getItem("fv_km_arrivo") || "";
                 document.getElementById("input_acconto").value = localStorage.getItem("fv_acconto") || "";
-                
-                document.getElementById("input_gasolio_litri").value = localStorage.getItem("fv_spesa_gasolio_litri") || "";
-                document.getElementById("input_gasolio_prezzo").value = localStorage.getItem("fv_spesa_gasolio_prezzo") || "";
-                document.getElementById("select_carta_gasolio").value = localStorage.getItem("fv_carta_gasolio_sel") || "NESSUNA";
-                document.getElementById("input_carta_gasolio_man").value = localStorage.getItem("fv_carta_gasolio_man") || "";
-                gestisciCarta('gasolio');
-
-                document.getElementById("input_adblue_litri").value = localStorage.getItem("fv_spesa_adblue_litri") || "";
-                document.getElementById("input_adblue_prezzo").value = localStorage.getItem("fv_spesa_adblue_prezzo") || "";
-                document.getElementById("select_carta_adblue").value = localStorage.getItem("fv_carta_adblue_sel") || "NESSUNA";
-                document.getElementById("input_carta_adblue_man").value = localStorage.getItem("fv_carta_adblue_man") || "";
-                gestisciCarta('adblue');
-
-                document.getElementById("input_pasti").value = localStorage.getItem("fv_spesa_pasti") || "";
-                document.getElementById("input_hotel").value = localStorage.getItem("fv_spesa_hotel") || "";
-                document.getElementById("input_varie").value = localStorage.getItem("fv_spesa_varie") || "";
 
                 const hideZero = localStorage.getItem("fv_opt_hide_zero");
                 if (hideZero !== null) document.getElementById("opt_hide_zero").checked = hideZero === "1";
 
                 storicoTourGiorni = JSON.parse(localStorage.getItem("fv_storico_tour")) || [];
                 fotoScontriniCorrenti = JSON.parse(localStorage.getItem("fv_foto_scontrini")) || [];
+                
                 registroSpeseDinamiche = JSON.parse(localStorage.getItem("fv_spese_dinamiche")) || [];
+                registroRifornimenti = JSON.parse(localStorage.getItem("fv_rifornimenti_dinamici")) || [];
 
                 const galleria = document.getElementById("container_anteprima_foto");
                 galleria.innerHTML = "";
@@ -832,6 +793,10 @@
             }
         }
 
+        /* -------------------------------------------------------------------------- */
+        /* LOGICA TOUR E GIORNATA SUCCESSIVA                        */
+        /* -------------------------------------------------------------------------- */
+
         function chiudiModal(id) {
             document.getElementById(id).classList.add("hidden");
         }
@@ -845,34 +810,24 @@
             document.getElementById("input_km_arrivo").value = "";
             document.getElementById("input_acconto").value = "";
 
-            document.getElementById("input_gasolio_litri").value = "";
-            document.getElementById("input_gasolio_prezzo").value = "";
-            document.getElementById("select_carta_gasolio").value = "NESSUNA";
-            document.getElementById("input_carta_gasolio_man").value = "";
-            document.getElementById("input_adblue_litri").value = "";
-            document.getElementById("input_adblue_prezzo").value = "";
-            document.getElementById("select_carta_adblue").value = "NESSUNA";
-            document.getElementById("input_carta_adblue_man").value = "";
-            document.getElementById("input_pasti").value = "";
-            document.getElementById("input_hotel").value = "";
-            document.getElementById("input_varie").value = "";
-            
             document.getElementById("container_anteprima_foto").innerHTML = "";
             fotoScontriniCorrenti = [];
             storicoTourGiorni = [];
+            
             registroSpeseDinamiche = [];
+            registroRifornimenti = [];
+            
             renderSpeseDinamiche();
+            renderRifornimenti();
 
             const oggi = new Date();
             document.getElementById("input_data").value = formattaDataISO(oggi);
             salvaDatiLocalStorage();
-            document.getElementById("badge_km_totali").innerText = "0 KM Percorsi Oggi";
-            document.getElementById("badge_gasolio_calc").innerText = "Totale Gasolio: € 0,00";
-            document.getElementById("badge_adblue_calc").innerText = "Totale AdBlue: € 0,00";
+            rilevaCambiamenti();
         }
 
         function confermaInizioViaggio() {
-            apriConfirm("🚀", "Nuovo Viaggio?", "Vuoi iniziare un nuovo viaggio? Verranno azzerate le tappe correnti, il cliente, i chilometri, il registro scontrini e lo storico tour. I dati dell'autista, del bus e della targa rimarranno salvati sul telefono.", () => {
+            apriConfirm("🚀", "Nuovo Viaggio?", "Vuoi iniziare un nuovo viaggio? Verranno azzerate le tappe correnti, i chilometri, il registro scontrini e le spese. Autista, bus e targa rimarranno salvati.", () => {
                 eseguiTabulaRasaCompleta();
             });
         }
@@ -884,27 +839,25 @@
             const kmPart = parseFloat(document.getElementById("input_km_partenza").value) || 0;
             const kmArr = parseFloat(document.getElementById("input_km_arrivo").value) || 0;
             
-            const pasti = parseFloat(document.getElementById("input_pasti").value) || 0;
-            const hotel = parseFloat(document.getElementById("input_hotel").value) || 0;
-            const varie = parseFloat(document.getElementById("input_varie").value) || 0;
-            
-            const litG = parseFloat(document.getElementById("input_gasolio_litri").value) || 0;
-            const prcG = parseFloat(document.getElementById("input_gasolio_prezzo").value) || 0;
-            const gasolio = Math.round(litG * prcG * 100) / 100;
+            let parch = 0, ztl = 0, tasse = 0, pasti = 0, hotel = 0, varie = 0;
+            let gasolio = 0, adblue = 0;
 
-            const litA = parseFloat(document.getElementById("input_adblue_litri").value) || 0;
-            const prcA = parseFloat(document.getElementById("input_adblue_prezzo").value) || 0;
-            const adblue = Math.round(litA * prcA * 100) / 100;
-
-            let parch = 0;
-            let ztl = 0;
-            let tasse = 0;
-
+            // Somma array dinamico generico
             registroSpeseDinamiche.forEach(spesa => {
                 const importoFloat = parseFloat(spesa.importo) || 0;
                 if (spesa.tipo === "PARCHEGGIO") parch += importoFloat;
                 else if (spesa.tipo === "ZTL") ztl += importoFloat;
                 else if (spesa.tipo === "TASSA/FRONTIERA") tasse += importoFloat;
+                else if (spesa.tipo === "PASTO") pasti += importoFloat;
+                else if (spesa.tipo === "HOTEL") hotel += importoFloat;
+                else if (spesa.tipo === "VARIE") varie += importoFloat;
+            });
+
+            // Somma array dinamico rifornimenti
+            registroRifornimenti.forEach(rif => {
+                const parziale = (parseFloat(rif.litri) || 0) * (parseFloat(rif.prezzo) || 0);
+                if (rif.tipo === "GASOLIO") gasolio += parziale;
+                if (rif.tipo === "ADBLUE") adblue += parziale;
             });
 
             storicoTourGiorni.push({
@@ -931,34 +884,25 @@
 
             salvaTappaInStorico();
 
+            // Setup nuovo giorno
             document.getElementById("input_km_partenza").value = kmArrivo;
             document.getElementById("input_km_arrivo").value = "";
             document.getElementById("input_tratta_inizio").value = fineTratta;
             document.getElementById("input_tratta_fine").value = "";
 
-            document.getElementById("input_gasolio_litri").value = "";
-            document.getElementById("input_gasolio_prezzo").value = "";
-            document.getElementById("select_carta_gasolio").value = "NESSUNA";
-            document.getElementById("input_carta_gasolio_man").value = "";
-            document.getElementById("input_adblue_litri").value = "";
-            document.getElementById("input_adblue_prezzo").value = "";
-            document.getElementById("select_carta_adblue").value = "NESSUNA";
-            document.getElementById("input_carta_adblue_man").value = "";
-            document.getElementById("input_pasti").value = "";
-            document.getElementById("input_hotel").value = "";
-            document.getElementById("input_varie").value = "";
-            
+            // Reset liste dinamiche per il giorno dopo
             registroSpeseDinamiche = [];
+            registroRifornimenti = [];
+            
             renderSpeseDinamiche();
+            renderRifornimenti();
             
             const dataCorrente = new Date(document.getElementById("input_data").value);
             dataCorrente.setDate(dataCorrente.getDate() + 1);
             document.getElementById("input_data").value = formattaDataISO(dataCorrente);
 
             salvaDatiLocalStorage();
-            document.getElementById("badge_km_totali").innerText = "0 KM Percorsi Oggi";
-            document.getElementById("badge_gasolio_calc").innerText = "Totale Gasolio: € 0,00";
-            document.getElementById("badge_adblue_calc").innerText = "Totale AdBlue: € 0,00";
+            rilevaCambiamenti(); // Azzera i badge
             document.getElementById("modal_giorno_successivo").classList.remove("hidden");
         }
 
@@ -966,6 +910,10 @@
             eseguiTabulaRasaCompleta();
             apriAlert("Tour Concluso", "Il tour corrente è stato salvato e archiviato. La schermata è stata azzerata e ripulita, pronta per un nuovo inserimento.");
         }
+
+        /* -------------------------------------------------------------------------- */
+        /* GENERAZIONE STAMPE PDF E EXCEL                   */
+        /* -------------------------------------------------------------------------- */
 
         function generaExcelTour() {
             if (storicoTourGiorni.length === 0) return;
@@ -997,11 +945,11 @@
                     const importo = g.spese[chiave] || 0;
                     if (importo > 0) {
                         let desc = `Spesa registrata per ${nomiVoci[chiave]}`;
-                        if (chiave === "gasolio") desc = "Rifornimento carburante diesel per tragitto";
-                        else if (chiave === "adblue") desc = "Rifornimento additivo AdBlue per bus";
-                        else if (chiave === "pasti") desc = "Rimborso vitto / pasto autista di servizio";
-                        else if (chiave === "hotel") desc = "Soggiorno e pernottamento hotel autista";
-                        else if (chiave === "varie") desc = "Altre spese operative documentate";
+                        if (chiave === "gasolio") desc = "Rifornimento carburante diesel aggregato";
+                        else if (chiave === "adblue") desc = "Rifornimento additivo AdBlue aggregato";
+                        else if (chiave === "pasti") desc = "Rimborso vitto / pasti autista aggregati";
+                        else if (chiave === "hotel") desc = "Soggiorno e pernottamento hotel";
+                        else if (chiave === "varie") desc = "Altre spese operative documentate aggregate";
 
                         righeSpese.push([dFormato, nomiVoci[chiave] || chiave.toUpperCase(), desc, importo]);
                     }
@@ -1163,6 +1111,7 @@
             tbody.innerHTML = "";
             let sommaTotaleSpese = 0;
 
+            // STAMPA SPESE GENERICHE
             registroSpeseDinamiche.forEach(spesa => {
                 const importoFloat = parseFloat(spesa.importo) || 0;
                 if (!(optHideZero && importoFloat === 0)) {
@@ -1171,62 +1120,41 @@
                     let tipoVisualizzato = "";
                     
                     if (spesa.tipo === "PARCHEGGIO") {
-                        tipoVisualizzato = "Parcheggio Bus / Checkpoint";
-                        descrizioneDettaglio = spesa.localita ? `Sosta in parcheggio autorizzato (Località: ${spesa.localita})` : "Ticket di sosta / parcheggio bus";
+                        tipoVisualizzato = "Parcheggio Bus";
+                        descrizioneDettaglio = spesa.testo ? `Località: ${spesa.testo}` : "Ticket sosta / parcheggio";
                     } else if (spesa.tipo === "ZTL") {
                         tipoVisualizzato = "ZTL";
-                        descrizioneDettaglio = spesa.localita ? `Accesso varco controllato ZTL (Località: ${spesa.localita})` : "Oneri accesso ZTL / centro urbano";
+                        descrizioneDettaglio = spesa.testo ? `Località: ${spesa.testo}` : "Accesso ZTL";
                     } else if (spesa.tipo === "TASSA/FRONTIERA") {
                         tipoVisualizzato = "Tasse / Frontiera";
-                        descrizioneDettaglio = spesa.localita ? `Oneri transito transfrontaliero (Dogana: ${spesa.localita})` : "Tasse transito stradale / frontiera doganale";
+                        descrizioneDettaglio = spesa.testo ? `Dogana/Luogo: ${spesa.testo}` : "Tasse di transito";
+                    } else if (spesa.tipo === "PASTO") {
+                        tipoVisualizzato = "Pasto";
+                        descrizioneDettaglio = spesa.testo ? `Ristorante/Loc: ${spesa.testo}` : "Vitto autista";
+                    } else if (spesa.tipo === "HOTEL") {
+                        tipoVisualizzato = "Hotel / Alloggio";
+                        descrizioneDettaglio = spesa.testo ? `Struttura/Loc: ${spesa.testo}` : "Pernottamento autista";
+                    } else if (spesa.tipo === "VARIE") {
+                        tipoVisualizzato = "Spese Varie / Extra";
+                        descrizioneDettaglio = spesa.testo ? spesa.testo : "Spesa eccezionale documentata";
                     }
+
                     inserisciRigaSpesa(tbody, dataStringa, tipoVisualizzato, descrizioneDettaglio, importoFloat);
                 }
             });
 
-            const litriG = parseFloat(document.getElementById("input_gasolio_litri").value) || 0;
-            const prezzoG = parseFloat(document.getElementById("input_gasolio_prezzo").value) || 0;
-            const cartaGasSel = document.getElementById("select_carta_gasolio").value;
-            const cartaGasMan = document.getElementById("input_carta_gasolio_man").value.trim();
-            const cartaGasFinale = cartaGasSel === "MANUALE" ? cartaGasMan : cartaGasSel;
-            
-            const valGasolio = Math.round(litriG * prezzoG * 100) / 100;
-            if (!(optHideZero && valGasolio === 0)) {
-                sommaTotaleSpese += valGasolio;
-                const descGasolio = `Rifornimento carburante: ${litriG} Lt @ ${prezzoG.toFixed(3).replace('.', ',')} €/lt [Carta: ${cartaGasFinale}]`;
-                inserisciRigaSpesa(tbody, dataStringa, "Rifornimento Gasolio", descGasolio, valGasolio);
-            }
-
-            const litriA = parseFloat(document.getElementById("input_adblue_litri").value) || 0;
-            const prezzoA = parseFloat(document.getElementById("input_adblue_prezzo").value) || 0;
-            const cartaAdSel = document.getElementById("select_carta_adblue").value;
-            const cartaAdMan = document.getElementById("input_carta_adblue_man").value.trim();
-            const cartaAdFinale = cartaAdSel === "MANUALE" ? cartaAdMan : cartaAdSel;
-
-            const valAdblue = Math.round(litriA * prezzoA * 100) / 100;
-            if (!(optHideZero && valAdblue === 0)) {
-                sommaTotaleSpese += valAdblue;
-                const descAdblue = `Rifornimento additivo AdBlue: ${litriA} Lt @ ${prezzoA.toFixed(3).replace('.', ',')} €/lt [Carta: ${cartaAdFinale}]`;
-                inserisciRigaSpesa(tbody, dataStringa, "Rifornimento AdBlue", descAdblue, valAdblue);
-            }
-
-            const valPasti = parseFloat(document.getElementById("input_pasti").value) || 0;
-            if (!(optHideZero && valPasti === 0)) {
-                sommaTotaleSpese += valPasti;
-                inserisciRigaSpesa(tbody, dataStringa, "Pasti", "Vitto autista", valPasti);
-            }
-
-            const valHotel = parseFloat(document.getElementById("input_hotel").value) || 0;
-            if (!(optHideZero && valHotel === 0)) {
-                sommaTotaleSpese += valHotel;
-                inserisciRigaSpesa(tbody, dataStringa, "Hotel / Alloggio", "Pernottamento autista", valHotel);
-            }
-
-            const valVarie = parseFloat(document.getElementById("input_varie").value) || 0;
-            if (!(optHideZero && valVarie === 0)) {
-                sommaTotaleSpese += valVarie;
-                inserisciRigaSpesa(tbody, dataStringa, "Spese Varie / Extra", "Spese eccezionali documentate", valVarie);
-            }
+            // STAMPA RIFORNIMENTI
+            registroRifornimenti.forEach(rif => {
+                const parziale = (parseFloat(rif.litri) || 0) * (parseFloat(rif.prezzo) || 0);
+                if (!(optHideZero && parziale === 0)) {
+                    sommaTotaleSpese += parziale;
+                    const cartaFinale = rif.carta === "MANUALE" ? rif.cartaManuale : rif.carta;
+                    const nomeRif = rif.tipo === 'GASOLIO' ? 'Rifornimento Gasolio' : 'Rifornimento AdBlue';
+                    const descRif = `${rif.litri} Lt @ ${parseFloat(rif.prezzo).toFixed(3).replace('.', ',')} €/lt [Carta: ${cartaFinale || 'Non spec.'}]`;
+                    
+                    inserisciRigaSpesa(tbody, dataStringa, nomeRif, descRif, parziale);
+                }
+            });
 
             if (tbody.innerHTML === "") {
                 tbody.innerHTML = `<tr><td colspan="4" class="text-center italic py-4 text-slate-800 font-medium">Nessuna spesa sostenuta nella data odierna</td></tr>`;
@@ -1269,7 +1197,10 @@
             tbody.appendChild(tr);
         }
 
-        // DIALOGHI DI CONFERMA PERSONALIZZATI (SOSTITUTI DI ALERT/CONFIRM)
+        /* -------------------------------------------------------------------------- */
+        /* DIALOGHI PERSONALIZZATI                          */
+        /* -------------------------------------------------------------------------- */
+        
         function apriAlert(titolo, messaggio) {
             document.getElementById("alert_title").innerText = titolo;
             document.getElementById("alert_message").innerText = messaggio;
