@@ -32,17 +32,19 @@
             </div>
         </div>
 
-        <div id="spese_container" class="space-y-4">
+        <div class="bg-slate-900 p-4 rounded-2xl border border-blue-900/30 mb-6">
+            <h3 class="text-xs font-bold text-blue-400 uppercase mb-3">Rilevamento Chilometri</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <input type="number" id="km_partenza" placeholder="KM Inizio" class="bg-slate-800 p-3 rounded-xl font-bold">
+                <input type="number" id="km_arrivo" placeholder="KM Arrivo" class="bg-slate-800 p-3 rounded-xl font-bold">
             </div>
-
-        <button onclick="aggiungiRigaSpesa()" class="w-full mt-4 bg-blue-600 py-3 rounded-xl font-bold uppercase tracking-widest">+ Aggiungi Spesa</button>
-
-        <div class="bg-blue-950/30 border border-blue-900 p-4 rounded-2xl mt-6">
-            <h3 class="text-xs font-bold text-blue-400 uppercase mb-2">Stato Acconti e Rimborsi</h3>
-            <p class="text-[10px] text-blue-200 italic">Gestito dall'Ufficio. Verifica qui se hai rimborsi in attesa.</p>
         </div>
 
-        <button onclick="inviaUfficio()" class="w-full mt-6 bg-emerald-600 py-4 rounded-xl font-black uppercase text-white shadow-lg">Invia all'ufficio</button>
+        <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 px-1">Spese di Giornata</h3>
+        <div id="spese_container" class="space-y-4"></div>
+        <button onclick="aggiungiRigaSpesa()" class="w-full mt-4 border border-blue-600/50 text-blue-400 py-3 rounded-xl font-bold uppercase text-xs">+ Aggiungi Spesa</button>
+
+        <button onclick="inviaUfficio()" class="w-full mt-8 bg-emerald-600 py-4 rounded-xl font-black uppercase text-white shadow-lg active:scale-95 transition-transform">Invia all'ufficio</button>
     </div>
 
     <script>
@@ -57,8 +59,9 @@
         function renderSpese() {
             const container = document.getElementById('spese_container');
             container.innerHTML = spese.map(s => `
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-2">
-                    <select onchange="aggiornaSpesa(${s.id}, 'categoria', this.value)" class="w-full bg-slate-800 p-2 rounded-lg font-bold text-xs uppercase">
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 relative">
+                    <button onclick="rimuoviSpesa(${s.id})" class="absolute top-2 right-2 text-red-500 text-xs">X</button>
+                    <select onchange="aggiornaSpesa(${s.id}, 'categoria', this.value)" class="w-full bg-slate-800 p-2 rounded-lg font-bold text-xs uppercase mb-2">
                         <option value="PARCHEGGIO" ${s.categoria=='PARCHEGGIO'?'selected':''}>Parcheggio</option>
                         <option value="AUTOSTRADA" ${s.categoria=='AUTOSTRADA'?'selected':''}>Autostrada</option>
                         <option value="GASOLIO" ${s.categoria=='GASOLIO'?'selected':''}>Gasolio</option>
@@ -67,7 +70,7 @@
                         <option value="HOTEL" ${s.categoria=='HOTEL'?'selected':''}>Hotel</option>
                         <option value="VARIE" ${s.categoria=='VARIE'?'selected':''}>Varie</option>
                     </select>
-                    <input type="text" placeholder="Descrizione (opzionale)" value="${s.desc}" oninput="aggiornaSpesa(${s.id}, 'desc', this.value)" class="w-full bg-slate-800 p-2 rounded-lg text-sm">
+                    <input type="text" placeholder="Descrizione (opzionale)" value="${s.desc}" oninput="aggiornaSpesa(${s.id}, 'desc', this.value)" class="w-full bg-slate-800 p-2 rounded-lg text-sm mb-2">
                     <input type="number" placeholder="€ Importo" value="${s.imp}" oninput="aggiornaSpesa(${s.id}, 'imp', this.value)" class="w-full bg-slate-800 p-2 rounded-lg font-bold text-amber-400">
                 </div>
             `).join('');
@@ -78,10 +81,22 @@
             if(s) s[campo] = val;
         }
 
+        function rimuoviSpesa(id) {
+            spese = spese.filter(x => x.id !== id);
+            renderSpese();
+        }
+
         async function inviaUfficio() {
-            console.log("Dati pronti per Firestore:", { autista: document.getElementById('autista').value, spese });
-            alert("Foglio inviato all'ufficio con successo!");
-            // Qui aggiungeremo la funzione addDoc(collection(db, "viaggi"), ...)
+            const dati = {
+                autista: document.getElementById('autista').value,
+                bus: document.getElementById('bus').value,
+                km_partenza: document.getElementById('km_partenza').value,
+                km_arrivo: document.getElementById('km_arrivo').value,
+                spese: spese,
+                data: new Date().toISOString()
+            };
+            console.log("Dati pronti per Firebase:", dati);
+            alert("Foglio di viaggio inviato con successo!");
         }
     </script>
 </body>
